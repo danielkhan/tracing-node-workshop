@@ -53,7 +53,30 @@ Configure datasource influxdb
 ## Sending metrics from Node.js
 `npm install -S appmetrics-statsd`
 
-In app.js ... `const appstatsd = require('appmetrics-statsd').StatsD();`
+In app.js:
+
+```js
+// Exists
+require('dotenv').config({ path: '../.env' });
+
+// Add
+const appstatsd = require('appmetrics-statsd').StatsD(
+  { host: process.env.COLLECTOR, prefix: `${process.env.MY_HANDLE}_` }
+);
+```
+
+Hit `http://localhost:8080` a few times.
+
+## Create a dashboard
+
+![Grafana Event Loop Dashboard](./assets/grafana-eventloop-dashboard.png)
+
+## Define Alerts
+![Grafana Create Alert](./assets/grafana-add-alert.png)
+
+## Create a Dashboard for memory_process_virtual
+* Fix metric
+
 
 # Install Jaeger Tracing
 
