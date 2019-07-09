@@ -1,8 +1,6 @@
 require('dotenv').config({ path: '../.env' });
 
-const appstatsd = require('appmetrics-statsd').StatsD(
-  { host: process.env - collector, prefix: process.env.MY_HANDLE }
-);
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
