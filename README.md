@@ -45,10 +45,15 @@ sudo apt update
 sudo apt install -y grafana
 
 service grafana-server start
-
-appmetrics-statsd
-
 http://tracing.khan.io:3000
+Configure datasource influxdb
+
+![InfluxDB Datasource in Grafana](./assets/influxdb-datasource-grafana.png)
+
+## Sending metrics from Node.js
+`npm install -S appmetrics-statsd`
+
+In app.js ... `const appstatsd = require('appmetrics-statsd').StatsD();`
 
 # Install Jaeger Tracing
 
@@ -67,5 +72,4 @@ $ docker run -d --name jaeger \
 
 Frontend `http://tracing.khan.io:16686`.
 
-![Jaeger Architecture](./assets/jaeger-architecture.png "Jaeger Architecture")
-
+![Jaeger Architecture](./assets/jaeger-architecture.png)
