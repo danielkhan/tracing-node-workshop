@@ -1,0 +1,20 @@
+{
+  "name": "express-frontend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "cookie-parser": "~1.4.3",
+    "dd-trace": "^0.12.0",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "jaeger-client": "^3.13.0",
+    "morgan": "~1.9.0",
+    "pug": "^2.0.4",
+    "request": "^2.88.0"
+  }
+}
