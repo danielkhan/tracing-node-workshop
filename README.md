@@ -61,6 +61,3 @@ $ docker run -d --name jaeger \
 Frontend `http://tracing.khan.io:16686`.
 
 ![Jaeger Architecture](./assets/jaeger-architecture.png "Jaeger Architecture")
-
-dbUser
-XtjymRA2kIH5xota
