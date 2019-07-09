@@ -40,8 +40,15 @@ Restart telegraf
 ## Grafana
 sudo apt install -y software-properties-common
 sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
+sudo wget -q -O - https://packages.grafana.com/gpg.key | apt-key add -
 sudo apt update
 sudo apt install -y grafana
+
+service grafana-server start
+
+appmetrics-statsd
+
+http://tracing.khan.io:3000
 
 # Install Jaeger Tracing
 
@@ -62,5 +69,3 @@ Frontend `http://tracing.khan.io:16686`.
 
 ![Jaeger Architecture](./assets/jaeger-architecture.png "Jaeger Architecture")
 
-dbUser
-XtjymRA2kIH5xota
