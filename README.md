@@ -59,30 +59,30 @@ In app.js:
 
 
 // express-frontend
-const statsdpfx = `${process.env.MY_HANDLE}_express-frontend_`;
+const statspfx = `${process.env.MY_HANDLE}_express-frontend_`;
 const statsd = require('appmetrics-statsd').StatsD(
-  { host: process.env.COLLECTOR, prefix: statsdpfx}
+  { host: process.env.COLLECTOR, prefix: statspfx}
 );
 
 // service-gateway
 const expressStatsd = require('express-statsd');
-const statsdpfx = `${process.env.MY_HANDLE}_express-frontend_`;
+const statspfx = `${process.env.MY_HANDLE}_express-frontend_`;
 const statsd = require('appmetrics-statsd').StatsD(
-  { host: process.env.COLLECTOR, prefix: statsdpfx }
+  { host: process.env.COLLECTOR, prefix: statspfx }
 );
 
 // service-green
 const expressStatsd = require('express-statsd');
-const statsdpfx = `${process.env.MY_HANDLE}_service-green_`;
+const statspfx = `${process.env.MY_HANDLE}_service-green_`;
 const statsd = require('appmetrics-statsd').StatsD(
-  { host: process.env.COLLECTOR, prefix: statsdpfx }
+  { host: process.env.COLLECTOR, prefix: statspfx }
 );
 
 // service-blue
 const expressStatsd = require('express-statsd');
-const statsdpfx = `${process.env.MY_HANDLE}_service-blue_`;
+const statspfx = `${process.env.MY_HANDLE}_service-blue_`;
 const statsd = require('appmetrics-statsd').StatsD(
-  { host: process.env.COLLECTOR, prefix: statsdpfx }
+  { host: process.env.COLLECTOR, prefix: statspfx }
 );
 
 ```
@@ -170,3 +170,33 @@ $ docker run -d --name jaeger \
 Frontend `http://tracing.khan.io:16686`.
 
 ![Jaeger Architecture](./assets/jaeger-architecture.png)
+
+# Install Opencensus Node
+
+`npm install @opencensus/nodejs --save`
+
+express-frontend: `app.js`
+const tracing = require('@opencensus/nodejs');
+tracing.start();
+
+Hit `http://localhost:8080` a few times.
+
+
+Install `npm install @opencensus/exporter-jaeger -S`
+
+```js
+const tracing = require('@opencensus/nodejs');
+const JaegerTraceExporter = require('@opencensus/exporter-jaeger').JaegerTraceExporter;
+
+const options = {
+  serviceName: 'express-frontend',
+  tags: [process.env.MY_HANDLE],
+  host: process.env.COLLECTOR,
+}
+const exporter = new JaegerTraceExporter(options);
+tracing.start({ exporter });
+```
+
+Hit the webpage
+
+Open `http://tracing.khan.io:16686`.
