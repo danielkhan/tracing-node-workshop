@@ -1,47 +1,23 @@
-# Installing the services
+This repository contains material for my workshop Tracing Node.
 
-`git clone ...`
+# Setting up all services
+1. Clone the repository `git clone git@github.com:danielkhan/tracing-node-workshop.git`.
+2. Copy `/.env-sample` to `/.env`.
+3. Fill in the information provided.
+4. Create 4 terminal windows.
+5. In each window, change into a service and run `npm install` followed by `npm start`.
+6. Create one more window, change into `/monitoring` and run `npm install` there as well.
 
-Create 4 terminal windows.
-Change in each directory and run `npm install` followed by `npm start`.
-
-Copy `.env-sample` to `.env`.
-
-Change MY_HANDLE.
-Set DB Password.
-
-Run all services
 
 # Collecting metrics
+To collect metrics, we need a server that contains services for receiving metrics
+as well as some user interface.
+For this workshop, this server exists already.
 
-# Install metrics tooling
-
-## Telegraf and InfluxDB
-wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
-source /etc/lsb-release
-echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
-
-## InfluxDB
-
-sudo apt-get update && sudo apt-get install influxdb
-sudo systemctl unmask influxdb.service
-service influxdb start
-
-## Telegraf
-
-sudo apt-get update && sudo apt-get install telegraf
-service telegraf start
-
-/etc/telegraf/telegraf.conf
-Uncomment statsd
-Restart telegraf
-
-
-## Grafana
-sudo apt install -y software-properties-common
-sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
-sudo apt update
-sudo apt install -y grafana
+This provides the following services for our metrics monitoring solution:
+- Telegraf: A dameon that can collect different kind of data and provides a statsd endpoint
+- InfluxDB: A timeseries database
+- Grafana: A user interface that lets us create dashboards from different datasources
 
 # Install Jaeger Tracing
 
