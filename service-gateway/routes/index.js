@@ -7,18 +7,17 @@ let toggle = 0;
 
 module.exports = () => {
 
-  
+
 
   router.get('/', (req, res, next) => {
     if (toggle < 3) {
       request.get(`http://localhost:3010?choice=${req.query.choice}`, (e, r) => {
-        console.log('AAA');
         if (e) {
           return next(e);
         }
-        if(r.statusCode > 299) {
+        if (r.statusCode > 299) {
           toggle++;
-          return res.status(r.statusCode).json({error: 'Something went wrong!'});
+          return res.status(r.statusCode).json({ error: 'Something went wrong!' });
         }
         toggle++;
         return res.json(JSON.parse(r.body));
@@ -27,8 +26,8 @@ module.exports = () => {
       toggle = 0;
       request.get(`http://localhost:3020?choice=${req.query.choice}`, (e, r) => {
         if (e) return next(e);
-        if(r.statusCode > 299) {
-          return res.status(r.statusCode).json({error: 'Something went wrong!'});
+        if (r.statusCode > 299) {
+          return res.status(r.statusCode).json({ error: 'Something went wrong!' });
         }
         return res.json(JSON.parse(r.body));
       });
