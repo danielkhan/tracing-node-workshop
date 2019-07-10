@@ -1,5 +1,4 @@
 require('dotenv').config({ path: '../.env' });
-const serviceName = require('./package.json').name;
 
 const createError = require('http-errors');
 const express = require('express');
