@@ -51,6 +51,11 @@ Configure datasource influxdb
 ![InfluxDB Datasource in Grafana](./assets/influxdb-datasource-grafana.png)
 
 ## Sending metrics from Node.js
+
+Create project monitoring
+npm init -y
+
+
 `npm install -S appmetrics-statsd`
 
 In app.js:
