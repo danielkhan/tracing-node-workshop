@@ -56,16 +56,42 @@ Configure datasource influxdb
 In app.js:
 
 ```js
-// Exists
-require('dotenv').config({ path: '../.env' });
 
-// Add
-const appstatsd = require('appmetrics-statsd').StatsD(
-  { host: process.env.COLLECTOR, prefix: `${process.env.MY_HANDLE}_` }
+
+// express-frontend
+const statsdpfx = `${process.env.MY_HANDLE}_express-frontend_`;
+const statsd = require('appmetrics-statsd').StatsD(
+  { host: process.env.COLLECTOR, prefix: statsdpfx}
 );
+
+// service-gateway
+const expressStatsd = require('express-statsd');
+const statsdpfx = `${process.env.MY_HANDLE}_express-frontend_`;
+const statsd = require('appmetrics-statsd').StatsD(
+  { host: process.env.COLLECTOR, prefix: statsdpfx }
+);
+
+// service-green
+const expressStatsd = require('express-statsd');
+const statsdpfx = `${process.env.MY_HANDLE}_service-green_`;
+const statsd = require('appmetrics-statsd').StatsD(
+  { host: process.env.COLLECTOR, prefix: statsdpfx }
+);
+
+// service-blue
+const expressStatsd = require('express-statsd');
+const statsdpfx = `${process.env.MY_HANDLE}_service-blue_`;
+const statsd = require('appmetrics-statsd').StatsD(
+  { host: process.env.COLLECTOR, prefix: statsdpfx }
+);
+
 ```
 
+Metrics descriptions https://github.com/RuntimeTools/appmetrics-statsd.
+
 Hit `http://localhost:8080` a few times.
+
+
 
 ## Create a dashboard
 
@@ -77,6 +103,54 @@ Hit `http://localhost:8080` a few times.
 ## Create a Dashboard for memory_process_virtual
 * Fix metric
 
+## Create a dashboard that shows error 500
+Add a dashboard that shows error 500 and 200.
+
+
+Add a middleware for express metrics:
+
+```js
+app.use((req, res, next) => {
+  var startTime = new Date().getTime();
+
+  // Function called on response finish that sends stats to statsd
+  function sendStats() {
+    var key = 'http-express-';
+
+    // Status Code
+    var statusCode = res.statusCode || 'unknown_status';
+    statsd.increment(key + 'status_code.' + statusCode);
+
+    // Response Time
+    var duration = new Date().getTime() - startTime;
+    statsd.timing(key + 'response_time', duration);
+
+    cleanup();
+  }
+
+  // Function to clean up the listeners we've added
+  function cleanup() {
+    res.removeListener('finish', sendStats);
+    res.removeListener('error', cleanup);
+    res.removeListener('close', cleanup);
+  }
+
+  // Add response listeners
+  res.once('finish', sendStats);
+  res.once('error', cleanup);
+  res.once('close', cleanup);
+
+  if (next) {
+    next();
+  }
+})
+```
+
+Hit `http://localhost:8080` a few times.
+
+
+
+![Grafana Event Loop Dashboard](./assets/grafana-_status_500_.png)
 
 # Install Jaeger Tracing
 

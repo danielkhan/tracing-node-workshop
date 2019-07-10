@@ -1,6 +1,7 @@
 require('dotenv').config({ path: '../.env' });
-const appstatsd = require('appmetrics-statsd').StatsD(
-  { host: process.env.COLLECTOR, prefix: `${process.env.MY_HANDLE}_` }
+const statsdpfx = `${process.env.MY_HANDLE}_express-frontend_`;
+const statsd = require('appmetrics-statsd').StatsD(
+  { host: process.env.COLLECTOR, prefix: statsdpfx }
 );
 
 const createError = require('http-errors');
@@ -12,6 +13,8 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 
 const app = express();
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -1,4 +1,8 @@
 require('dotenv').config({ path: '../.env' });
+const statsdpfx = `${process.env.MY_HANDLE}_service-green_`;
+const statsd = require('appmetrics-statsd').StatsD(
+  { host: process.env.COLLECTOR, prefix: statsdpfx }
+);
 
 const createError = require('http-errors');
 const express = require('express');

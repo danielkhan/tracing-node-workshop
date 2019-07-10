@@ -1,5 +1,10 @@
 require('dotenv').config({ path: '../.env' });
 
+const statsdpfx = `${process.env.MY_HANDLE}_service-blue_`;
+const statsd = require('appmetrics-statsd').StatsD(
+  { host: process.env.COLLECTOR, prefix: statsdpfx }
+);
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -12,6 +17,8 @@ mongoose.set('useCreateIndex', true);
 mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_SERVER}/votes-${process.env.MY_HANDLE}?retryWrites=true&w=majority`);
 const indexRouter = require('./routes/index');
 const app = express();
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
