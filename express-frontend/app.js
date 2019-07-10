@@ -1,5 +1,17 @@
 require('dotenv').config({ path: '../.env' });
 
+const tracing = require('@opencensus/nodejs');
+const propagation = require('@opencensus/propagation-tracecontext');
+const traceContext = new propagation.TraceContextFormat();
+const JaegerTraceExporter = require('@opencensus/exporter-jaeger').JaegerTraceExporter;
+
+const options = {
+  serviceName: `${process.env.MY_HANDLE}_express-frontend`,
+  host: process.env.COLLECTOR,
+}
+const exporter = new JaegerTraceExporter(options);
+tracing.start({ exporter, propagation: traceContext });
+
 const statspfx = `${process.env.MY_HANDLE}_express-frontend_`;
 
 const statsd = require('appmetrics-statsd').StatsD(

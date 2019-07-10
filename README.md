@@ -191,7 +191,6 @@ const JaegerTraceExporter = require('@opencensus/exporter-jaeger').JaegerTraceEx
 
 const options = {
   serviceName: 'express-frontend',
-  tags: [process.env.MY_HANDLE],
   host: process.env.COLLECTOR,
 }
 const exporter = new JaegerTraceExporter(options);
@@ -201,3 +200,16 @@ tracing.start({ exporter });
 Hit the webpage
 
 Open `http://tracing.khan.io:16686`.
+
+# Propagation
+
+Add console.log(req.headers) to middleware in service-gateway
+
+`npm install @opencensus/propagation-tracecontext -S`
+
+const propagation = require('@opencensus/propagation-tracecontext');
+const traceContext = new propagation.TraceContextFormat();
+
+tracing.start({ exporter, propagation: traceContext });
+
+Compare

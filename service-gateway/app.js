@@ -1,16 +1,16 @@
 require('dotenv').config({ path: '../.env' });
 
-
 const tracing = require('@opencensus/nodejs');
 const JaegerTraceExporter = require('@opencensus/exporter-jaeger').JaegerTraceExporter;
+const propagation = require('@opencensus/propagation-tracecontext');
+const traceContext = new propagation.TraceContextFormat();
 
 const options = {
-  serviceName: 'express-gateway',
-  tags: [process.env.MY_HANDLE],
+  serviceName: `${process.env.MY_HANDLE}_service-gateway`,
   host: process.env.COLLECTOR,
 }
 const exporter = new JaegerTraceExporter(options);
-tracing.start({ exporter });
+tracing.start({ exporter, propagation: traceContext });
 
 const statsdpfx = `${process.env.MY_HANDLE}_express-frontend_`;
 const statsd = require('appmetrics-statsd').StatsD(
@@ -31,7 +31,7 @@ const app = express();
 
 app.use((req, res, next) => {
   var startTime = new Date().getTime();
-
+  console.log(req.headers);
   // Function called on response finish that sends stats to statsd
   function sendStats() {
     var key = 'http-express-';

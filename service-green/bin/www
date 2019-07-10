@@ -1,17 +1,4 @@
 #!/usr/bin/env node
-require('dotenv').config({ path: '../.env' });
-
-const tracing = require('@opencensus/nodejs');
-const JaegerTraceExporter = require('@opencensus/exporter-jaeger').JaegerTraceExporter;
-
-const options = {
-  serviceName: 'service-blue',
-  tags: [process.env.MY_HANDLE],
-  host: process.env.COLLECTOR,
-}
-const exporter = new JaegerTraceExporter(options);
-tracing.start({ exporter });
-
 /**
  * Module dependencies.
  */

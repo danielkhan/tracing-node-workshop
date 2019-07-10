@@ -1,17 +1,5 @@
 #!/usr/bin/env node
 
-require('dotenv').config({ path: '../.env' });
-
-const tracing = require('@opencensus/nodejs');
-const JaegerTraceExporter = require('@opencensus/exporter-jaeger').JaegerTraceExporter;
-
-const options = {
-  serviceName: 'express-frontend',
-  tags: [process.env.MY_HANDLE],
-  host: process.env.COLLECTOR,
-}
-const exporter = new JaegerTraceExporter(options);
-
 const app = require('../app');
 const debug = require('debug')('express-frontend:server');
 const http = require('http');
