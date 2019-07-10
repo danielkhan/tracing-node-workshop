@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@opencensus/exporter-jaeger": "0.0.15",
+    "@opencensus/nodejs": "0.0.15",
+    "@opencensus/propagation-tracecontext": "0.0.15",
     "appmetrics-statsd": "^3.0.0"
   }
 }

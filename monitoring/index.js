@@ -1,11 +1,11 @@
-module.exports.metrics = (host, prefix) => {
+module.exports.metrics = (collector, handle, serviceName) => {
   const statsd = require('appmetrics-statsd').StatsD(
-    { host, prefix }
+    { host: collector, prefix: `${handle}_${serviceName}_` }
   );
 
   const middleware = (req, res, next) => {
     var startTime = new Date().getTime();
-
+    console.log(req.headers);
     // Function called on response finish that sends stats to statsd
     function sendStats() {
       var key = 'http-express-';
@@ -38,8 +38,20 @@ module.exports.metrics = (host, prefix) => {
     }
   }
 
+  const JaegerTraceExporter = require('@opencensus/exporter-jaeger').JaegerTraceExporter;
+  const tracing = require('@opencensus/nodejs');
+  const options = {
+    serviceName: `${handle}_${serviceName}`,
+    host: collector,
+  }
+  const exporter = new JaegerTraceExporter(options);
+  const propagation = require('@opencensus/propagation-tracecontext');
+  const traceContext = new propagation.TraceContextFormat();
+  tracing.start({ exporter, propagation: traceContext });
+
   return {
     statsd,
     middleware,
+    tracing,
   }
 };
