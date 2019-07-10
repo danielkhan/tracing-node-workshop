@@ -1,3 +1,10 @@
+require('dotenv').config({ path: '../.env' });
+
+const statsdpfx = `${process.env.MY_HANDLE}_service-blue_`;
+const statsd = require('appmetrics-statsd').StatsD(
+  { host: process.env.COLLECTOR, prefix: statsdpfx }
+);
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');

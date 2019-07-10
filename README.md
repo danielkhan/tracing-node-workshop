@@ -185,6 +185,7 @@ Hit `http://localhost:8080` a few times.
 Install `npm install @opencensus/exporter-jaeger -S`
 
 ```js
+// bin/www
 const tracing = require('@opencensus/nodejs');
 const JaegerTraceExporter = require('@opencensus/exporter-jaeger').JaegerTraceExporter;
 
