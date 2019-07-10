@@ -1,6 +1,9 @@
 require('dotenv').config({ path: '../.env' });
 const serviceName = require('./package.json').name;
 
+const monitoring = require('../monitoring');
+const metrics = monitoring.metrics(process.env.COLLECTOR, `${process.env.MY_HANDLE}_${serviceName}_`);
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
