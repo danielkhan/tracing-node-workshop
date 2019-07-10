@@ -16,6 +16,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_SERVER}/votes-${process.env.MY_HANDLE}?retryWrites=true&w=majority`);
 const indexRouter = require('./routes/index');
 const app = express();
+app.use(metrics.middleware);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
