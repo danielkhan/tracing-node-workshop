@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const axios = require('axios');
 const request = require('request');
 
 const votes = {
@@ -16,7 +15,7 @@ module.exports = () => {
     try {
 
       // const str = new Array(100000).join('*');
-  
+
 
       if (req.query.choice && req.query.choice !== 'spaces' && req.query.choice !== 'tabs') {
         return res.status(400).end();
@@ -25,7 +24,7 @@ module.exports = () => {
         if (e) return next(e);
         return res.render('index', JSON.parse(r.body));
       });
-      
+
     } catch (err) {
       return next(err);
     }

@@ -1,16 +1,5 @@
 #!/usr/bin/env node
-/*
-const appzip = require('appmetrics-zipkin')({
-  host: 'localhost',
-  port: 9411,
-  serviceName:'voting-service-gateway',
-  sampleRate: 1.0
-});
-*/
 
-const tracer = require('dd-trace').init({
-  analytics: true
-});
 const app = require('../app');
 const debug = require('debug')('service-1:server');
 const http = require('http');
