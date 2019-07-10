@@ -1,7 +1,22 @@
 #!/usr/bin/env node
-const tracer = require('dd-trace').init({
-  analytics: true
-});
+require('dotenv').config({ path: '../.env' });
+
+const tracing = require('@opencensus/nodejs');
+const JaegerTraceExporter = require('@opencensus/exporter-jaeger').JaegerTraceExporter;
+
+const options = {
+  serviceName: 'service-blue',
+  tags: [process.env.MY_HANDLE],
+  host: process.env.COLLECTOR,
+}
+const exporter = new JaegerTraceExporter(options);
+tracing.start({ exporter });
+
+
+const statsdpfx = `${process.env.MY_HANDLE}_service-blue_`;
+const statsd = require('appmetrics-statsd').StatsD(
+  { host: process.env.COLLECTOR, prefix: statsdpfx }
+);
 
 /**
  * Module dependencies.
@@ -36,7 +51,7 @@ server.on('listening', onListening);
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort (val) {
+function normalizePort(val) {
   const parsedPort = parseInt(val, 10);
 
   if (isNaN(parsedPort)) {
@@ -56,7 +71,7 @@ function normalizePort (val) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError (error) {
+function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -84,7 +99,7 @@ function onError (error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening () {
+function onListening() {
   const addr = server.address();
   const bind = typeof addr === 'string'
     ? `pipe ${addr}`

@@ -5,7 +5,7 @@ const tracing = require('@opencensus/nodejs');
 const JaegerTraceExporter = require('@opencensus/exporter-jaeger').JaegerTraceExporter;
 
 const options = {
-  serviceName: 'express-frontend',
+  serviceName: 'express-gateway',
   tags: [process.env.MY_HANDLE],
   host: process.env.COLLECTOR,
 }

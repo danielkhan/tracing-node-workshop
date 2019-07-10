@@ -1,21 +1,3 @@
-require('dotenv').config({ path: '../.env' });
-
-const tracing = require('@opencensus/nodejs');
-const JaegerTraceExporter = require('@opencensus/exporter-jaeger').JaegerTraceExporter;
-
-const options = {
-  serviceName: 'express-frontend',
-  tags: [process.env.MY_HANDLE],
-  host: process.env.COLLECTOR,
-}
-const exporter = new JaegerTraceExporter(options);
-tracing.start({ exporter });
-
-const statsdpfx = `${process.env.MY_HANDLE}_service-blue_`;
-const statsd = require('appmetrics-statsd').StatsD(
-  { host: process.env.COLLECTOR, prefix: statsdpfx }
-);
-
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
